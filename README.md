@@ -33,7 +33,7 @@
 
 训练与推理过程中使用prompt的格式为`"<画面描述>，<风格类型>"`，训练过程的`<画面描述>`直接使用图像文件名，测试过程的`<画面描述>`使用测试提供的json文件中的内容；风格类型描述使用`style`+`数字`，如`stytle00`、`stytle01`。
 
-为使用VAE Encoder进行prompt特征增强，首先我们用VAE Encoder提取同一风格不同图像在潜在空间的均$\mu_i$与方差$\sigma_i$，取均值与方差的平均值$\bar{\mu}$、$\bar{\sigma}$做为对应风格在潜在空间的表示$f_{img}$，$f_{img}$由$$\bar{\mu}$$、$$\bar{\sigma}$$拼接得到。之后将$f_{img}$输入两层卷积网络完成通道数与分辨率的调整，最后通过加权的方式得到对prompt特征$f_{text}$的增强结果$f_{strength}$，其中$f_{img}$的权重为0.01。公式表示如下：
+为使用VAE Encoder进行prompt特征增强，首先我们用VAE Encoder提取同一风格不同图像在潜在空间的均$\mu_i$与方差$\sigma_i$，取均值与方差的平均值$\bar{\mu}$、$\bar{\sigma}$做为对应风格在潜在空间的表示$f_{img}$，$f_{img}$由$\bar{\mu}$、$\bar{\sigma}$拼接得到。之后将$f_{img}$输入两层卷积网络完成通道数与分辨率的调整，最后通过加权的方式得到对prompt特征$f_{text}$的增强结果$f_{strength}$，其中$f_{img}$的权重为0.01。公式表示如下：
 $$f_{strength}=0.01*Conv(Conv(cat(\bar{\mu}, \bar{\sigma}))) + f_{text}$$
 
 我们探索了不同模块不同的学习率对生成结果的影响，同一风格不同的数据数目与风格对学习率的设置存在较大的差异。
